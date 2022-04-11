@@ -3,11 +3,11 @@ const app = express();
 const cors = require('cors');
 const path = require('path');
 const socket = require('socket.io');
-
-app.use((req, res, next) => {
-  req.io = io;
-  next();
-});
+const mongoose = require('mongoose');
+//app.use((req, res, next) => {
+//  req.io = io;
+//  next();
+//});
 
 const testimonialsRoutes = require('./routes/testimonials.routes');
 const concertsRoutes = require('./routes/concerts.routes');
@@ -17,10 +17,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(cors());
 
-
-const server = app.listen(process.env.PORT || 8000, () => {
-  console.log('Server is running on port: 8000');
-});
+app.use;
 
 app.use('/api', testimonialsRoutes);
 app.use('/api', concertsRoutes);
@@ -32,14 +29,22 @@ app.get('*', (req, res) => {
 });
 
 app.use((req, res) => {
-  res.status(404).json({message: '404 not found...'});
+  res.status(404).json({ message: '404 not found...' });
 });
 
+mongoose.connect('mongodb://localhost:27017/NewWaveDB', {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
 
-const io = socket(server);
-io.on('connection', (socket) => {
-  console.log('a user connected ' + socket.id);
-  socket.on('disconnect', () => {
-    console.log('Socket ' + socket.id + ' left');
-  });
+const db = mongoose.connection;
+
+db.once('open', () => {
+  console.log('Connected to the database');
+});
+
+db.on('error', (err) => console.log('Error' + err));
+
+app.listen(process.env.PORT || 8000, () => {
+  console.log('Server is running');
 });
