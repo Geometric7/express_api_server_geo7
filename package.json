@@ -5,6 +5,7 @@
   "license": "MIT",
   "scripts": {
     "start": "yarn nodemon server.js",
+    "test": "NODE_ENV=test mocha \"./{,!(node_modules|client)/**/}*.test.js\"",
     "build": "cd client && yarn install && yarn build"
   },
   "dependencies": {

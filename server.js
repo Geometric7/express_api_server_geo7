@@ -32,6 +32,9 @@ app.use((req, res) => {
   res.status(404).json({ message: '404 not found...' });
 });
 
+//const dbURI = process.env.NODE_ENV === 'test' ? 'mongodb://localhost:27017/NewWaveDBTest' : 'mongodb+srv://Geometric7:MyProject2022@cluster0.n3y6p.mongodb.net/NewWaveDB?retryWrites=true&w=majority';
+//mongoose.connect(dbURI, { useNewUrlParser: true });
+
 mongoose.connect('mongodb+srv://Geometric7:MyProject2022@cluster0.n3y6p.mongodb.net/NewWaveDB?retryWrites=true&w=majority', {
   useNewUrlParser: true,
   useUnifiedTopology: true,
