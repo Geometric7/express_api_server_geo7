@@ -73,10 +73,10 @@ exports.putItem = async (req, res) => {
           image: image,
         },
       });
-      const depChenged = await Concert.findById(req.params.id);
+      const depChanged = await Concert.findById(req.params.id);
       res.json({
         dep,
-        depChenged
+        depChanged
       });
     } else res.statu(404).json({
       message: 'Not found'
