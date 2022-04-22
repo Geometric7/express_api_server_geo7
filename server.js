@@ -32,10 +32,22 @@ app.use((req, res) => {
   res.status(404).json({ message: '404 not found...' });
 });
 
-mongoose.connect('mongodb+srv://Geometric7:MyProject2022@cluster0.n3y6p.mongodb.net/NewWaveDB?retryWrites=true&w=majority', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+//const dbURI = process.env.NODE_ENV === 'test' ? 'mongodb://localhost:27017/NewWaveDBTest' : 'mongodb+srv://Geometric7:MyProject2022@cluster0.n3y6p.mongodb.net/NewWaveDB?retryWrites=true&w=majority';
+//mongoose.connect(dbURI, { useNewUrlParser: true });
+
+const NODE_ENV = process.env.NODE_ENV;
+let dbURI = '';
+
+if(NODE_ENV === 'production') dbURI = 'mongodb+srv://Geometric7:MyProject2022@cluster0.n3y6p.mongodb.net/NewWaveDB?retryWrites=true&w=majority';
+else if(NODE_ENV === 'test') dbURI = 'mongodb://localhost:27017/NewWaveDBTest';
+else dbURI = 'mongodb://localhost:27017/NewWaveDB';
+
+mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true });
+
+//mongoose.connect('mongodb+srv://Geometric7:MyProject2022@cluster0.n3y6p.mongodb.net/NewWaveDB?retryWrites=true&w=majority', {
+//  useNewUrlParser: true,
+//  useUnifiedTopology: true,
+//});
 
 const db = mongoose.connection;
 
@@ -45,6 +57,8 @@ db.once('open', () => {
 
 db.on('error', (err) => console.log('Error' + err));
 
-app.listen(process.env.PORT || 8000, () => {
+const server = app.listen(process.env.PORT || 8000, () => {
   console.log('Server is running');
 });
+
+module.exports = server;
