@@ -1,5 +1,8 @@
 const Concert = require('../models/concerts.model');
 
+const sanitize = require('mongo-sanitize');
+
+
 exports.getAll = async (req, res) => {
   try {
     res.json(await Concert.find());
@@ -53,13 +56,14 @@ exports.postItem = async (req, res) => {
 
 exports.putItem = async (req, res) => {
   try {
+    const pure = sanitize(req.body);
     const {
       performer,
       genre,
       price,
       day,
       image
-    } = req.body;
+    } = pure;
     const dep = await Concert.findById(req.params.id);
     if (dep) {
       await Concert.updateOne({
